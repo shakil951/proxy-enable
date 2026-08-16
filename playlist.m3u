@@ -1,0 +1,8 @@
+#EXTM3U
+
+#EXTINF:-1 group-title="Toffee Live", Toffee Channel 1
+https://example.com/live/stream.m3u8
+
+#EXTINF:-1 group-title="Toffee Live", Toffee Channel 2
+https://backup.example.com/stream.m3u8
+
