@@ -45,8 +45,10 @@ def build_playlist():
     cookie_encoded = clean_cookie(content)
     lines = content.replace("\r", "").split("\n")
     
-    out_lines = ["#EXTM3U"]
-    current_ext = ""
+    out_lines = ["#EXTM3U\n"]
+    current_logo = ""
+    current_name = ""
+    current_group = "Toffee Live"
 
     for line in lines:
         l = line.strip()
@@ -54,7 +56,20 @@ def build_playlist():
             continue
 
         if l.startswith("#EXTINF:"):
-            current_ext = l
+            # লোগো এক্সট্রাক্ট
+            logo_m = re.search(r'tvg-logo="([^"]+)"', l)
+            current_logo = logo_m.group(1) if logo_m else ""
+
+            # গ্রুপ এক্সট্রাক্ট
+            group_m = re.search(r'group-title="([^"]+)"', l)
+            current_group = group_m.group(1) if group_m else "Toffee Live"
+
+            # চ্যানেলের নাম
+            if "," in l:
+                current_name = l.split(",")[-1].strip()
+            else:
+                current_name = "Toffee Live"
+
         elif not l.startswith("#") and ("http://" in l or "https://" in l):
             raw_stream = l
             if "cookie=" in raw_stream:
@@ -67,25 +82,28 @@ def build_playlist():
             raw_stream = re.sub(r'[?&]$', '', raw_stream)
             raw_stream = urllib.parse.unquote(raw_stream)
 
-            # এনকোডিং এবং ডামি এক্সটেনশন যুক্ত করা
             encoded_url = urllib.parse.quote(raw_stream, safe="")
             
             final_proxy_url = (
                 f"{PROXY_BASE}?url={encoded_url}"
                 f"&cookie={cookie_encoded}"
                 f"&secret_key={SECRET_KEY}"
-                f"&dummy=.m3u8"
             )
 
-            ext_line = current_ext if current_ext else '#EXTINF:-1,Toffee Live'
-            out_lines.append(ext_line)
-            out_lines.append(final_proxy_url)
-            current_ext = ""
+            ch_name = current_name if current_name else "Toffee Live"
+            
+            # স্ট্যান্ডার্ড ট্যাগ স্ট্রাকচার
+            tag_line = f'#EXTINF:-1 tvg-id="{ch_name}" tvg-name="{ch_name}" tvg-logo="{current_logo}" group-title="{current_group}",{ch_name}'
+            out_lines.append(f"{tag_line}\n{final_proxy_url}\n")
+
+            current_logo = ""
+            current_name = ""
+            current_group = "Toffee Live"
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write("\n".join(out_lines) + "\n")
+        f.writelines(out_lines)
 
-    print("Generated clean playlist for Android apps successfully.")
+    print("Playlist generated in standard M3U format.")
 
 if __name__ == "__main__":
     build_playlist()
