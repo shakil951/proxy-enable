@@ -26,7 +26,6 @@ def clean_cookie(text):
     match = re.search(r'(URLPrefix[^"\s\n\r&]+)', text)
     if match:
         c = match.group(1)
-        # যদি আগে থেকে এনকোড থাকে ডিকোড করে প্লেইন করা
         while "%" in c:
             decoded = urllib.parse.unquote(c)
             if decoded == c:
@@ -46,7 +45,7 @@ def build_playlist():
     cookie_encoded = clean_cookie(content)
     lines = content.replace("\r", "").split("\n")
     
-    out_lines = ["#EXTM3U\n"]
+    out_lines = ["#EXTM3U"]
     current_ext = ""
 
     for line in lines:
@@ -55,7 +54,6 @@ def build_playlist():
             continue
 
         if l.startswith("#EXTINF:"):
-            # অপ্রয়োজনীয় ডাবল স্পেস ক্লিন করা
             current_ext = l
         elif not l.startswith("#") and ("http://" in l or "https://" in l):
             raw_stream = l
@@ -69,33 +67,25 @@ def build_playlist():
             raw_stream = re.sub(r'[?&]$', '', raw_stream)
             raw_stream = urllib.parse.unquote(raw_stream)
 
-            # পারফেক্ট সিঙ্গেল এনকোডিং
+            # এনকোডিং এবং ডামি এক্সটেনশন যুক্ত করা
             encoded_url = urllib.parse.quote(raw_stream, safe="")
             
             final_proxy_url = (
                 f"{PROXY_BASE}?url={encoded_url}"
                 f"&cookie={cookie_encoded}"
                 f"&secret_key={SECRET_KEY}"
+                f"&dummy=.m3u8"
             )
 
-            # এক্সটি ইনফো ঠিক রাখা
-            ext_line = current_ext if current_ext else '#EXTINF:-1 group-title="Toffee Live",Toffee Live'
-            out_lines.append(f"{ext_line}\n{final_proxy_url}\n")
+            ext_line = current_ext if current_ext else '#EXTINF:-1,Toffee Live'
+            out_lines.append(ext_line)
+            out_lines.append(final_proxy_url)
             current_ext = ""
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.writelines("\n".join(out_lines))
+        f.write("\n".join(out_lines) + "\n")
 
-    print(f"Generated clean playlist for Android apps.")
+    print("Generated clean playlist for Android apps successfully.")
 
 if __name__ == "__main__":
     build_playlist()
-
-# scraper.py ফাইলের ভেতর final_stream_url লাইনটি পরিবর্তন করুন:
-
-final_stream_url = (
-    f"{PROXY_BASE}?url={encoded_url}"
-    f"&cookie={cookie_encoded}"
-    f"&secret_key={SECRET_KEY}"
-    f"&dummy=.m3u8"   # <-- এই লাইনটি অ্যাপকে বাধ্য করবে লিঙ্কটি রিড করতে
-)
