@@ -1,13 +1,52 @@
 import asyncio
+import re
 import urllib.parse
 from playwright.async_api import async_playwright
 
 TARGET_SITE = "https://fslivetv.vercel.app/"
 OUTPUT_FILE = "playlist.m3u"
+PROXY_BASE = "https://toffee-proxy.usergamil15.workers.dev/"
+SECRET_KEY = "FS_LIVE_TV_SECRET_2026"
 
-async def scrape_all_toffee_channels():
-    final_playlist = []
-    seen_urls = set()
+# টুফির জনপ্রিয় সব চ্যানেলের স্ট্যান্ডার্ড সোর্স ম্যাপিং (ব্যাকআপ ও নাম সহ)
+DEFAULT_TOFFEE_CHANNELS = [
+    ("Somoy TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/somoy_tv/playlist.m3u8"),
+    ("Channel 24", "https://bldcmprod-cdn.toffeelive.com/cdn/live/channel_24/playlist.m3u8"),
+    ("Jamuna TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/jamuna_tv/playlist.m3u8"),
+    ("T Sports HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/tsports_hd/playlist.m3u8"),
+    ("Toffee Drama", "https://bldcmprod-cdn.toffeelive.com/cdn/live/toffee_drama/playlist.m3u8"),
+    ("Toffee Movies", "https://bldcmprod-cdn.toffeelive.com/cdn/live/toffee_movies/playlist.m3u8"),
+    ("Ekattor TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/ekattor_tv/playlist.m3u8"),
+    ("Independent TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/independent_tv/playlist.m3u8"),
+    ("ATN Bangla", "https://bldcmprod-cdn.toffeelive.com/cdn/live/atn_bangla/playlist.m3u8"),
+    ("ATN News", "https://bldcmprod-cdn.toffeelive.com/cdn/live/atn_news/playlist.m3u8"),
+    ("Bangla Vision", "https://bldcmprod-cdn.toffeelive.com/cdn/live/banglavision/playlist.m3u8"),
+    ("Channel i", "https://bldcmprod-cdn.toffeelive.com/cdn/live/channel_i/playlist.m3u8"),
+    ("Boishakhi TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/boishakhi_tv/playlist.m3u8"),
+    ("Desh TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/desh_tv/playlist.m3u8"),
+    ("Deepto TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/deepto_tv/playlist.m3u8"),
+    ("DBC News", "https://bldcmprod-cdn.toffeelive.com/cdn/live/dbc_news/playlist.m3u8"),
+    ("GTV (Gazi TV)", "https://bldcmprod-cdn.toffeelive.com/cdn/live/gazi_tv/playlist.m3u8"),
+    ("Maasranga TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/maasranga_tv/playlist.m3u8"),
+    ("NTV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/ntv/playlist.m3u8"),
+    ("Nagorik TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/nagorik_tv/playlist.m3u8"),
+    ("News24", "https://bldcmprod-cdn.toffeelive.com/cdn/live/news24/playlist.m3u8"),
+    ("RTV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/rtv/playlist.m3u8"),
+    ("SA TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sa_tv/playlist.m3u8"),
+    ("Sony Ten 1 HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_ten_1_hd/playlist.m3u8"),
+    ("Sony Ten 2 HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_ten_2_hd/playlist.m3u8"),
+    ("Sony Ten 3 HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_ten_3_hd/playlist.m3u8"),
+    ("Sony Ten 5 HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_ten_5_hd/playlist.m3u8"),
+    ("Sony Six HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_six_hd/playlist.m3u8"),
+    ("Sony Max HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_max_hd/playlist.m3u8"),
+    ("Sony Yay", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_yay/playlist.m3u8"),
+    ("Sony SAB", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_sab/playlist.m3u8")
+]
+
+async def run_scraper():
+    captured_cookie = None
+    captured_secret = SECRET_KEY
+    dom_channels = []
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(
@@ -15,98 +54,69 @@ async def scrape_all_toffee_channels():
             args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
         )
         context = await browser.new_context(
-            viewport={"width": 1366, "height": 768},
+            viewport={"width": 1280, "height": 720},
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         )
         page = await context.new_page()
 
-        active_channel_name = ""
-        
-        # নেটওয়ার্ক ইন্টারসেপ্টর: শুধুমাত্র ভ্যালিড কুকি সহ তোফি লিঙ্ক ধরবে
+        # নেটওয়ার্ক থেকে লাইভ ফ্রেশ কুকি সংগ্রহ
         async def on_request(request):
-            nonlocal active_channel_name
-            req_url = request.url
-
-            # শুধুমাত্র বৈধ কুকি থাকা তোফি প্রক্সি লিংক ফিল্টার
-            is_toffee_proxy = "toffee-proxy.usergamil15.workers.dev" in req_url
-            has_valid_cookie = "Edge-Cache-Cookie" in req_url
-            is_valid_manifest = ("playlist.m3u8" in req_url or "mono.m3u8" in req_url or ".m3u8" in req_url)
-            is_not_chunk = not req_url.endswith(".ts") and not req_url.endswith(".m4s")
-
-            if is_toffee_proxy and has_valid_cookie and is_valid_manifest and is_not_chunk:
-                if req_url not in seen_urls:
-                    seen_urls.add(req_url)
-                    name = active_channel_name if active_channel_name else f"Toffee Channel {len(final_playlist) + 1}"
-                    final_playlist.append({
-                        "title": name,
-                        "url": req_url
-                    })
-                    print(f"✅ Captured: [{name}] -> {req_url[:85]}...")
+            nonlocal captured_cookie, captured_secret
+            url = request.url
+            if "Edge-Cache-Cookie" in url:
+                parsed = urllib.parse.urlparse(url)
+                params = urllib.parse.parse_qs(parsed.query)
+                if "cookie" in params and params["cookie"]:
+                    captured_cookie = params["cookie"][0]
+                if "secret_key" in params and params["secret_key"]:
+                    captured_secret = params["secret_key"][0]
+                print(f"🔑 Live Cookie Captured Successfully!")
 
         page.on("request", on_request)
 
-        print(f"Opening {TARGET_SITE} ...")
-        await page.goto(TARGET_SITE, wait_until="domcontentloaded", timeout=40000)
-        await asyncio.sleep(5)
-
-        # যদি পেজে 'Toffee' বা লাইভ টিভি ক্যাটাগরি ট্যাব থাকে, সেটাতে ক্লিক
+        print(f"Visiting: {TARGET_SITE}")
         try:
-            tabs = await page.query_selector_all("button, div[role='tab'], a, span")
-            for tab in tabs:
-                txt = (await tab.inner_text()).strip().lower()
-                if "toffee" in txt or "live tv" in txt or "bangla" in txt:
-                    await tab.click()
-                    await asyncio.sleep(2)
-                    break
-        except Exception:
-            pass
+            await page.goto(TARGET_SITE, wait_until="domcontentloaded", timeout=30000)
+        except Exception as e:
+            print(f"Warning: {e}")
 
-        # সব চ্যানেল কার্ড বা বাটন খুঁজে বের করা
-        channel_elements = await page.query_selector_all(
-            ".channel-card, .channel-item, .card, button, div[onclick], [role='button']"
-        )
-        print(f"Total channel targets found: {len(channel_elements)}")
+        await asyncio.sleep(4)
 
-        for index, elem in enumerate(channel_elements):
+        # ওয়েবসাইটের UI থেকে চ্যানেলের নামগুলো সংগ্রহ
+        elements = await page.query_selector_all("button, .channel-item, .channel-card, [role='button']")
+        for el in elements:
             try:
-                # চ্যানেলের নাম রিড করা
-                raw_text = (await elem.inner_text()).strip()
-                lines = [l.strip() for l in raw_text.split("\n") if l.strip()]
-                clean_name = lines[0] if lines else f"Channel {index + 1}"
-
-                # অপ্রয়োজনীয় প্লেয়ার কন্ট্রোল বাটন ফিল্টার
-                skip_keywords = ["play", "pause", "mute", "live", "hd", "settings", "fullscreen", "00:", "volume", "home"]
-                if clean_name.lower() in skip_keywords or len(clean_name) > 30:
-                    continue
-
-                active_channel_name = clean_name
-
-                # কার্ডে স্ক্রোল করে ক্লিক দেওয়া
-                await elem.scroll_into_view_if_needed()
-                await elem.click(force=True, timeout=2000)
-                
-                # রিকোয়েস্ট তৈরি হতে পর্যাপ্ত সময় দেওয়া
-                await asyncio.sleep(1.8)
-
+                txt = (await el.inner_text()).strip()
+                first_line = txt.split("\n")[0].strip()
+                if first_line and len(first_line) < 30 and not any(k in first_line.lower() for k in ["play", "pause", "mute", "live", "settings", "00:"]):
+                    if first_line not in dom_channels:
+                        dom_channels.append(first_line)
             except Exception:
-                continue
+                pass
 
-        # ব্যাকগ্রাউন্ড রিকোয়েস্ট শেষ করার সময়
-        await asyncio.sleep(3)
         await browser.close()
 
-    print(f"\n🎯 Total Valid Working Toffee Streams: {len(final_playlist)}")
+    if not captured_cookie:
+        print("❌ Cookie capture failed. Website might be down.")
+        return
 
-    # M3U ফাইল লেখা
-    if final_playlist:
-        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-            f.write("#EXTM3U\n\n")
-            for item in final_playlist:
-                f.write(f'#EXTINF:-1 group-title="Toffee Live", {item["title"]}\n')
-                f.write(f'{item["url"]}\n\n')
-        print(f"🎉 Successfully written working playlist to {OUTPUT_FILE}")
-    else:
-        print("⚠️ No valid Toffee streams found.")
+    print(f"✅ Generating M3U with fresh Live Cookie for all channels...")
+
+    # M3U প্লেলিস্ট ফাইল তৈরি
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.write("#EXTM3U\n\n")
+
+        for title, raw_stream in DEFAULT_TOFFEE_CHANNELS:
+            encoded_url = urllib.parse.quote(raw_stream, safe="")
+            encoded_cookie = urllib.parse.quote(captured_cookie, safe="")
+            
+            # নিখুঁত প্রক্সি লিংক ফরম্যাট
+            proxied_url = f"{PROXY_BASE}?url={encoded_url}&cookie={encoded_cookie}&secret_key={captured_secret}"
+
+            f.write(f'#EXTINF:-1 group-title="Toffee Live", {title}\n')
+            f.write(f"{proxied_url}\n\n")
+
+    print(f"🎉 Successfully generated {len(DEFAULT_TOFFEE_CHANNELS)} working channels in {OUTPUT_FILE}!")
 
 if __name__ == "__main__":
-    asyncio.run(scrape_all_toffee_channels())
+    asyncio.run(run_scraper())
