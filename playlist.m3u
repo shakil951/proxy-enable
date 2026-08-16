@@ -1,8 +1,8 @@
 #EXTM3U
 
-#EXTINF:-1 group-title="Live TV", Channel 1
+#EXTINF:-1 group-title="Toffee Live", Toffee Live Channel
 https://toffee-proxy.usergamil15.workers.dev/?url=http%3A%2F%2F103.165.93.31%3A8095%2Fbtv%2Ftracks-v1a1%2Fmono.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
 
-#EXTINF:-1 group-title="Live TV", Channel 2
+#EXTINF:-1 group-title="Toffee Live", Toffee Live Channel
 https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Ftoffee_drama%2Fplaylist.m3u8&cookie=Edge-Cache-Cookie%3DURLPrefix%3DaHR0cHM6Ly9ibGRjbXByb2QtY2RuLnRvZmZlZWxpdmUuY29t%3AExpires%3D1787032816%3AKeyName%3Dprod_linear%3ASignature%3DvVUPaGdLxwZUh9vfFGie2wbhXTegRIgAnlsdF2m9rGQba1oNePms_RJfLY6AclStf8R7DsN42ZxwU7jNi4wYBQ&secret_key=FS_LIVE_TV_SECRET_2026
 
