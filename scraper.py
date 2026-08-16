@@ -1,70 +1,60 @@
-import json
-import re
-import requests
+import asyncio
+from playwright.async_api import async_playwright
 
-TARGET_SITE = "https://fslivetv.vercel.app"
+TARGET_SITE = "https://fslivetv.vercel.app/"
 OUTPUT_FILE = "playlist.m3u"
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-}
+async def scrape_dynamic_streams():
+    captured_streams = []
 
-def extract_streams():
-    print(f"Fetching: {TARGET_SITE}")
-    try:
-        res = requests.get(TARGET_SITE, headers=headers, timeout=15)
-    except Exception as e:
-        print(f"Failed to fetch site: {e}")
-        return
+    async with async_playwright() as p:
+        # ব্যাকগ্রাউন্ডে ক্রোম ব্রাউজার চালু করা
+        browser = await p.chromium.launch(headless=True)
+        context = await browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        )
+        page = await context.new_page()
 
-    html = res.text
-    all_content = html
+        # নেটওয়ার্ক রিকোয়েস্ট ইন্টারসেপ্ট করে জেনারেট হওয়া m3u8 লিংক ক্যাপচার
+        async def handle_request(request):
+            req_url = request.url
+            if ".m3u8" in req_url or "workers.dev" in req_url:
+                if req_url not in captured_streams and "favicon" not in req_url:
+                    captured_streams.append(req_url)
+                    print(f"[Captured]: {req_url[:80]}...")
 
-    # ১. সাইটের সব JS ফাইল ও Next.js / Webpack চাঙ্ক সংগ্রহ
-    js_paths = re.findall(r'src=["\']([^"\']+\.js[^"\']*)["\']', html)
-    
-    # Next.js / Vite build manifest assets
-    build_manifests = re.findall(r'["\'](/_next/[^"\']+\.js)["\']', html)
-    js_paths.extend(build_manifests)
+        page.on("request", handle_request)
 
-    for js in set(js_paths):
-        full_js_url = js if js.startswith("http") else f"{TARGET_SITE.rstrip('/')}/{js.lstrip('/')}"
-        try:
-            js_res = requests.get(full_js_url, headers=headers, timeout=10)
-            if js_res.status_code == 200:
-                all_content += "\n" + js_res.text
-        except Exception:
-            pass
+        print(f"Opening {TARGET_SITE} ...")
+        await page.goto(TARGET_SITE, wait_until="networkidle", timeout=60000)
 
-    # ২. চ্যানেল অবজেক্ট বা সরাসরি m3u8 লিংক এক্সট্রাক্ট
-    # প্যাটার্ন ১: Cloudflare Worker প্রক্সি লিংক
-    worker_streams = re.findall(r'(https?://[a-zA-Z0-9_\-\.]+\.workers\.dev[^\s"\'<>`]+)', all_content)
-    
-    # প্যাটার্ন ২: স্ট্যান্ডার্ড HLS M3U8 লিংক
-    m3u8_streams = re.findall(r'(https?://[^\s"\'<>`]+\.m3u8[^\s"\'<>`]*)', all_content)
+        # পেজের সব চ্যানেল বাটনে ক্লিক ট্রিগার করা যাতে লিংক জেনারেট হয়
+        buttons = await page.query_selector_all("button, .channel-item, .channel-card, a")
+        print(f"Found {len(buttons)} interactive elements. Triggering...")
 
-    found_links = []
-    for link in (worker_streams + m3u8_streams):
-        clean_link = link.replace("\\", "").rstrip('",;\'')
-        if "example.com" not in clean_link and clean_link.startswith("http"):
-            found_links.append(clean_link)
+        for i, btn in enumerate(buttons[:40]): # চ্যানেলগুলোতে ক্লিক সিমুলেট
+            try:
+                await btn.click(timeout=2000)
+                await asyncio.sleep(1) # লিংক জেনারেট হওয়ার জন্য অপেক্ষা
+            except Exception:
+                pass
 
-    unique_streams = list(dict.fromkeys(found_links))
+        await asyncio.sleep(5)
+        await browser.close()
 
-    print(f"Total active streams found: {len(unique_streams)}")
+    # ইউনিক লিংক ফিল্টারিং
+    unique_streams = list(dict.fromkeys(captured_streams))
+    print(f"\nTotal generated streams captured: {len(unique_streams)}")
 
-    if not unique_streams:
-        print("Warning: No streams found. Check if site data is loaded from a separate API.")
-        return
-
-    # ৩. M3U প্লেলিস্ট জেনারেট
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n\n")
-        for idx, stream_url in enumerate(unique_streams, start=1):
-            f.write(f'#EXTINF:-1 group-title="Toffee Live", Channel {idx}\n')
-            f.write(f"{stream_url}\n\n")
-
-    print(f"Updated {OUTPUT_FILE} successfully with {len(unique_streams)} channels.")
+    if unique_streams:
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            f.write("#EXTM3U\n\n")
+            for idx, stream_url in enumerate(unique_streams, start=1):
+                f.write(f'#EXTINF:-1 group-title="Toffee Live", Channel {idx}\n')
+                f.write(f"{stream_url}\n\n")
+        print(f"Successfully generated {OUTPUT_FILE}")
+    else:
+        print("No dynamic streams could be captured.")
 
 if __name__ == "__main__":
-    extract_streams()
+    asyncio.run(scrape_dynamic_streams())
