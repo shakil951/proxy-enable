@@ -1,15 +1,16 @@
-name: Auto Scrape Dynamic Playlist
+name: Auto Convert Toffee Playlist to Worker Format
 
 on:
   schedule:
-    - cron: '0 */3 * * *'  # প্রতি ৩ ঘণ্টা পর পর অটো চলবে
+    # প্রতি ৩ ঘণ্টা পর পর অটো-আপডেট হবে
+    - cron: '0 */3 * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  scrape-and-update:
+  update-playlist:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -20,12 +21,10 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Playwright & Dependencies
-        run: |
-          pip install playwright
-          playwright install --with-deps chromium
+      - name: Install Dependencies
+        run: pip install requests
 
-      - name: Run Dynamic Scraper
+      - name: Run Converter
         run: python scraper.py
 
       - name: Commit and Push Changes
@@ -33,4 +32,4 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add playlist.m3u
-          git diff --staged --quiet || (git commit -m "Auto Update Toffee Dynamic Streams" && git push)
+          git diff --staged --quiet || (git commit -m "Auto Update Toffee Proxy Playlist" && git push)
