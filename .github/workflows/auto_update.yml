@@ -1,0 +1,32 @@
+name: Auto Scrape & Update Playlist
+
+on:
+  schedule:
+    # প্রতি ৩ ঘণ্টা পর পর অটো রান হবে
+    - cron: '0 */3 * * *'
+  workflow_dispatch: # ম্যানুয়ালি রান করার বাটন
+
+jobs:
+  update-m3u:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Scraper
+        run: python scraper.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add playlist.m3u
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto Update Toffee Playlist" && git push)
