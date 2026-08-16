@@ -90,3 +90,12 @@ def build_playlist():
 
 if __name__ == "__main__":
     build_playlist()
+
+# scraper.py ফাইলের ভেতর final_stream_url লাইনটি পরিবর্তন করুন:
+
+final_stream_url = (
+    f"{PROXY_BASE}?url={encoded_url}"
+    f"&cookie={cookie_encoded}"
+    f"&secret_key={SECRET_KEY}"
+    f"&dummy=.m3u8"   # <-- এই লাইনটি অ্যাপকে বাধ্য করবে লিঙ্কটি রিড করতে
+)
