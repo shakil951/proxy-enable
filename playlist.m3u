@@ -1,5 +1,215 @@
 #EXTM3U
 
-#EXTINF:-1 group-title="Toffee Live", Toffee Channel 1
-https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Ftoffee_drama%2Fplaylist.m3u8&cookie=Edge-Cache-Cookie%3DURLPrefix%3DaHR0cHM6Ly9ibGRjbXByb2QtY2RuLnRvZmZlZWxpdmUuY29t%3AExpires%3D1787032816%3AKeyName%3Dprod_linear%3ASignature%3DvVUPaGdLxwZUh9vfFGie2wbhXTegRIgAnlsdF2m9rGQba1oNePms_RJfLY6AclStf8R7DsN42ZxwU7jNi4wYBQ&secret_key=FS_LIVE_TV_SECRET_2026
+#EXTINF:-1 group-title="Toffee Live", Toffee TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Ftoffee_drama%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", WC Match Recap
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Ffifa_world_cup%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Somoy TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsomoy_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Jamuna TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fjamuna_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Ananda TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fanandatv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Bijoy TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fbijoytv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", NTV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fn_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Global TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fglobaltv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Channel S
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fchannel_s_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Rajdhani TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Frajdhani_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Bangla TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fbangla_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Asian TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fasian_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Channel i
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fchannel_i%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Movie Bangla
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fmovie_bangla%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Nexus TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fnexus_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Islamic TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fislamic_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Desh TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fdesh_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Independent TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Findependent_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Ekhon TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fekhon_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Ekattor TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fekattor_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Sony Ten Sports 1 HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsony_sports_1_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Sony Ten Sports 2 HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsony_sports_2_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Sony Ten Sports 5 HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsony_sports_5_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Sony Ten Cricket
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Ften_cricket%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Sony YAY
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsonyyay%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Sony Aath
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsonyaath%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Sony Entertainment Television
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsony_entertainment%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Sony MAX 2
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsonymax_2%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Sony BBC Earth HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsonybbc_earth_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", &TV HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fand_tv_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", TOFFEE Movies VIP
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Ftoffee_movie%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", CNN VIP
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fcnn%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", q_75,f_webp/NCLx35oBEef-9-uVh-Dg/posters/af9773c7-7971-41a2-9b78-121fcb240c48.png",ATN News
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fatn_news%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", q_75,f_webp/MCLv35oBEef-9-uVH-D2/posters/0d1e571c-ebb2-4277-9814-760a4f1603a6.png",ATN Bangla
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fatn_bangla%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", q_75,f_webp/-Xz3PJwBcqxnFHJBDAlE/posters/fecea361-8b60-4aeb-a530-6e27eee8178a.png",Mohona TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fmohona_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", q_75,f_webp/0y_tDJsBNnOkwJLWNrdE/posters/2ff058e1-630f-4657-8dc6-b677e65642c5.png",Global TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fglobal_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Channel S
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fchannel_s%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Euro Sport HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Feuro_sports_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Cartoon Network HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fcartoon_network_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Cartoon Network
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fcartoon_network_sd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Pogo
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fpogo_sd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Discovery Kids
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fdiscovery_kids%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Zee Bangla VIP
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fzee_bangla%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", w_400,q_100/7x0Jd5YBEef-9-uVv_Gy/posters/f630a176-73cc-48d7-94cf-69ba0d201b36.png",Zee Anmol
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fzee_anmol%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", w_400,q_100/DK8dd5YBrjBfS2_Ru22e/posters/a89a1e2e-677c-4a8a-9a66-dff5e0b921c8.png",Zing
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fzing_sd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Hum TV
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fhum_tv%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Hum Masala
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fhum_masala%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Hum Sitarey
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fhum_sitaray%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", SONY ENTERTAINMENT TELEVISION HD VIP
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsonyentertainmnt_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", B4U Music VIP
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fb4u_music%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", SONY SAB HD VIP
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsonysab_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Zee TV HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fzee_tv_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", SONY MAX HD VIP
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsony_max_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", q_75,f_webp/-C7MX5UBv9knK3AHdKOi/posters/b0f0bfe0-f1f3-48b3-83ce-203cd44cafe2.png",Zee Bangla Cinema
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fzee_bangla_cinema%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", w_300,q_85/OnSlPJYBcqxnFHJB6lFX/posters/4818f95a-c64a-490f-b310-a49aec026d71.png",Zee Bollywood
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fzee_bollywood%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", w_400,q_100/Pc3RD5YBtpl-Sbt7doxr/posters/d0f337ab-a7e6-4eed-bc7b-7d51fdc70a0f.png",Zee Action
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fzee_action%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", SONY MAX VIP
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsony_max%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", SONY PIX HD VIP
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fsonypix_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", w_400,q_100/U3QEd5YBcqxnFHJBpYzc/posters/3442d493-0c71-44b9-b12f-8e600d5eab91.png",Zee Cafe
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fzee_cafe_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", B4U Movies VIP
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fb4u_movies%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Zee Cinema HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fzee_cinema_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", TLC HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Ftlc_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", TLC
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Ftlc_sd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Animal Planet
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fanimal_planet_sd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Animal Planet HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fanimal_planet_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Discovery HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fdiscovery_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Discovery
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fdiscovery_sd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Discovery Science
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fdiscovery_science%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Discovery Turbo
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fdiscovery_turbo%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", Investigation Discovery HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fdiscovary_investigation_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
+
+#EXTINF:-1 group-title="Toffee Live", & Pictures HD
+https://toffee-proxy.usergamil15.workers.dev/?url=https%3A%2F%2Fbldcmprod-cdn.toffeelive.com%2Fcdn%2Flive%2Fandpicture_hd%2Fplaylist.m3u8&cookie=&secret_key=FS_LIVE_TV_SECRET_2026
 
