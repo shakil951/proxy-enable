@@ -1,122 +1,109 @@
-import asyncio
 import re
 import urllib.parse
-from playwright.async_api import async_playwright
+import requests
 
-TARGET_SITE = "https://fslivetv.vercel.app/"
-OUTPUT_FILE = "playlist.m3u"
+# সোর্স যেখান থেকে ফ্রেশ কুকি ও চ্যানেল আসে
+GITHUB_SOURCE_M3U = "https://raw.githubusercontent.com/sm-monirulislam/Toffee-Auto-Update/refs/heads/main/toffee_playlist.m3u"
+
+# আপনার টার্গেট প্রক্সি ফরম্যাট কনফিগারেশন
 PROXY_BASE = "https://toffee-proxy.usergamil15.workers.dev/"
 SECRET_KEY = "FS_LIVE_TV_SECRET_2026"
+OUTPUT_FILE = "playlist.m3u"
 
-# টুফির জনপ্রিয় সব চ্যানেলের স্ট্যান্ডার্ড সোর্স ম্যাপিং (ব্যাকআপ ও নাম সহ)
-DEFAULT_TOFFEE_CHANNELS = [
-    ("Somoy TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/somoy_tv/playlist.m3u8"),
-    ("Channel 24", "https://bldcmprod-cdn.toffeelive.com/cdn/live/channel_24/playlist.m3u8"),
-    ("Jamuna TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/jamuna_tv/playlist.m3u8"),
-    ("T Sports HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/tsports_hd/playlist.m3u8"),
-    ("Toffee Drama", "https://bldcmprod-cdn.toffeelive.com/cdn/live/toffee_drama/playlist.m3u8"),
-    ("Toffee Movies", "https://bldcmprod-cdn.toffeelive.com/cdn/live/toffee_movies/playlist.m3u8"),
-    ("Ekattor TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/ekattor_tv/playlist.m3u8"),
-    ("Independent TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/independent_tv/playlist.m3u8"),
-    ("ATN Bangla", "https://bldcmprod-cdn.toffeelive.com/cdn/live/atn_bangla/playlist.m3u8"),
-    ("ATN News", "https://bldcmprod-cdn.toffeelive.com/cdn/live/atn_news/playlist.m3u8"),
-    ("Bangla Vision", "https://bldcmprod-cdn.toffeelive.com/cdn/live/banglavision/playlist.m3u8"),
-    ("Channel i", "https://bldcmprod-cdn.toffeelive.com/cdn/live/channel_i/playlist.m3u8"),
-    ("Boishakhi TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/boishakhi_tv/playlist.m3u8"),
-    ("Desh TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/desh_tv/playlist.m3u8"),
-    ("Deepto TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/deepto_tv/playlist.m3u8"),
-    ("DBC News", "https://bldcmprod-cdn.toffeelive.com/cdn/live/dbc_news/playlist.m3u8"),
-    ("GTV (Gazi TV)", "https://bldcmprod-cdn.toffeelive.com/cdn/live/gazi_tv/playlist.m3u8"),
-    ("Maasranga TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/maasranga_tv/playlist.m3u8"),
-    ("NTV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/ntv/playlist.m3u8"),
-    ("Nagorik TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/nagorik_tv/playlist.m3u8"),
-    ("News24", "https://bldcmprod-cdn.toffeelive.com/cdn/live/news24/playlist.m3u8"),
-    ("RTV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/rtv/playlist.m3u8"),
-    ("SA TV", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sa_tv/playlist.m3u8"),
-    ("Sony Ten 1 HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_ten_1_hd/playlist.m3u8"),
-    ("Sony Ten 2 HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_ten_2_hd/playlist.m3u8"),
-    ("Sony Ten 3 HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_ten_3_hd/playlist.m3u8"),
-    ("Sony Ten 5 HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_ten_5_hd/playlist.m3u8"),
-    ("Sony Six HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_six_hd/playlist.m3u8"),
-    ("Sony Max HD", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_max_hd/playlist.m3u8"),
-    ("Sony Yay", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_yay/playlist.m3u8"),
-    ("Sony SAB", "https://bldcmprod-cdn.toffeelive.com/cdn/live/sony_sab/playlist.m3u8")
-]
-
-async def run_scraper():
-    captured_cookie = None
-    captured_secret = SECRET_KEY
-    dom_channels = []
-
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(
-            headless=True,
-            args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
-        )
-        context = await browser.new_context(
-            viewport={"width": 1280, "height": 720},
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        )
-        page = await context.new_page()
-
-        # নেটওয়ার্ক থেকে লাইভ ফ্রেশ কুকি সংগ্রহ
-        async def on_request(request):
-            nonlocal captured_cookie, captured_secret
-            url = request.url
-            if "Edge-Cache-Cookie" in url:
-                parsed = urllib.parse.urlparse(url)
-                params = urllib.parse.parse_qs(parsed.query)
-                if "cookie" in params and params["cookie"]:
-                    captured_cookie = params["cookie"][0]
-                if "secret_key" in params and params["secret_key"]:
-                    captured_secret = params["secret_key"][0]
-                print(f"🔑 Live Cookie Captured Successfully!")
-
-        page.on("request", on_request)
-
-        print(f"Visiting: {TARGET_SITE}")
-        try:
-            await page.goto(TARGET_SITE, wait_until="domcontentloaded", timeout=30000)
-        except Exception as e:
-            print(f"Warning: {e}")
-
-        await asyncio.sleep(4)
-
-        # ওয়েবসাইটের UI থেকে চ্যানেলের নামগুলো সংগ্রহ
-        elements = await page.query_selector_all("button, .channel-item, .channel-card, [role='button']")
-        for el in elements:
-            try:
-                txt = (await el.inner_text()).strip()
-                first_line = txt.split("\n")[0].strip()
-                if first_line and len(first_line) < 30 and not any(k in first_line.lower() for k in ["play", "pause", "mute", "live", "settings", "00:"]):
-                    if first_line not in dom_channels:
-                        dom_channels.append(first_line)
-            except Exception:
-                pass
-
-        await browser.close()
-
-    if not captured_cookie:
-        print("❌ Cookie capture failed. Website might be down.")
+def generate_proxy_playlist():
+    print(f"Fetching source playlist from: {GITHUB_SOURCE_M3U}")
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    }
+    
+    try:
+        res = requests.get(GITHUB_SOURCE_M3U, headers=headers, timeout=15)
+        if res.status_code != 200:
+            print(f"Failed to fetch source playlist. Status: {res.status_code}")
+            return
+    except Exception as e:
+        print(f"Error fetching source: {e}")
         return
 
-    print(f"✅ Generating M3U with fresh Live Cookie for all channels...")
+    content = res.text
+    lines = content.replace("\r", "").split("\n")
 
-    # M3U প্লেলিস্ট ফাইল তৈরি
+    channels = []
+    current_title = ""
+    current_cookie = ""
+    current_ua = "Toffee (Linux;Android 14)"
+
+    for line in lines:
+        trimmed = line.strip()
+        if not trimmed:
+            continue
+
+        if trimmed.startswith("#EXTINF:"):
+            # চ্যানেলের নাম এক্সট্রাক্ট করা (কমা দিয়ে ভাগ করে)
+            parts = trimmed.split(",", 1)
+            name = parts[1].strip() if len(parts) > 1 else "Toffee Channel"
+            current_title = name
+        elif trimmed.startswith("#EXTVLCOPT:http-user-agent="):
+            current_ua = trimmed.replace("#EXTVLCOPT:http-user-agent=", "").strip()
+        elif trimmed.startswith("#EXTVLCOPT:http-cookie="):
+            current_cookie = trimmed.replace("#EXTVLCOPT:http-cookie=", "").strip()
+        elif not trimmed.startswith("#") and trimmed.startswith("http"):
+            raw_url = trimmed
+            
+            # যদি URL-এর ভেতরে cookie কুয়েরি প্যারাম আকারে থাকে
+            if "cookie=" in trimmed:
+                url_parts = trimmed.split("cookie=")
+                raw_url = url_parts[0].replace(/[?&]$/, "")
+                current_cookie = url_parts[1].split("&ua=")[0].split("&")[0]
+            if "ua=" in trimmed:
+                current_ua = trimmed.split("ua=")[1].split("&")[0]
+
+            # URL এবং Cookie এনকোড করা
+            encoded_stream_url = urllib.parse.quote(raw_url, safe="")
+            
+            # কুকিতে Edge-Cache-Cookie ফরম্যাট নিশ্চিত করা
+            clean_cookie = current_cookie.strip()
+            try:
+                clean_cookie = urllib.parse.unquote(clean_cookie)
+            except Exception:
+                pass
+            if clean_cookie and not clean_cookie.startswith("Edge-Cache-Cookie="):
+                clean_cookie = f"Edge-Cache-Cookie={clean_cookie}"
+                
+            encoded_cookie = urllib.parse.quote(clean_cookie, safe="")
+
+            # 🎯 আপনার কাঙ্ক্ষিত ওয়ার্কার প্রক্সি লিংক
+            proxied_link = (
+                f"{PROXY_BASE}?url={encoded_stream_url}"
+                f"&cookie={encoded_cookie}"
+                f"&secret_key={SECRET_KEY}"
+            )
+
+            channels.append({
+                "title": current_title or f"Toffee Channel {len(channels) + 1}",
+                "url": proxied_link
+            })
+
+            # রিসেট
+            current_title = ""
+            current_cookie = ""
+            current_ua = "Toffee (Linux;Android 14)"
+
+    print(f"Total processed channels: {len(channels)}")
+
+    if not channels:
+        print("No channels found!")
+        return
+
+    # নতুন M3U প্লেলিস্ট তৈরি
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n\n")
+        for ch in channels:
+            f.write(f'#EXTINF:-1 group-title="Toffee Live", {ch["title"]}\n')
+            f.write(f'{ch["url"]}\n\n')
 
-        for title, raw_stream in DEFAULT_TOFFEE_CHANNELS:
-            encoded_url = urllib.parse.quote(raw_stream, safe="")
-            encoded_cookie = urllib.parse.quote(captured_cookie, safe="")
-            
-            # নিখুঁত প্রক্সি লিংক ফরম্যাট
-            proxied_url = f"{PROXY_BASE}?url={encoded_url}&cookie={encoded_cookie}&secret_key={captured_secret}"
-
-            f.write(f'#EXTINF:-1 group-title="Toffee Live", {title}\n')
-            f.write(f"{proxied_url}\n\n")
-
-    print(f"🎉 Successfully generated {len(DEFAULT_TOFFEE_CHANNELS)} working channels in {OUTPUT_FILE}!")
+    print(f"🎉 Successfully generated {OUTPUT_FILE} with {len(channels)} active channels!")
 
 if __name__ == "__main__":
-    asyncio.run(run_scraper())
+    generate_proxy_playlist()
