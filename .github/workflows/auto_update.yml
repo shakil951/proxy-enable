@@ -1,10 +1,10 @@
 name: Auto Convert Toffee Playlist to Worker Format
 
 on:
-  schedule:
-    # প্রতি ৩ ঘণ্টা পর পর অটো-আপডেট হবে
-    - cron: '0 */3 * * *'
-  workflow_dispatch:
+ # schedule:
+  #   # প্রতি ৩ ঘণ্টা পর পর অটো-আপডেট হবে
+  #   - cron: '0 */3 * * *'
+  workflow_dispatch:   # এটি রাখা ভালো, যাতে যখন ইচ্ছে ম্যানুয়ালি রান করতে পারেন
 
 permissions:
   contents: write
