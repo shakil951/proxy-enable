@@ -3,10 +3,10 @@ import urllib.parse
 import requests
 
 SOURCE_URLS = [
-    "https://raw.githubusercontent.com/sm-monirulislam/Toffee-Auto-Update/refs/heads/main/toffee_playlist.m3u",
-    "https://raw.githubusercontent.com/sm-monirulislam/Toffee-Auto-Update/main/toffee_playlist.m3u"
+    "https://raw.githubusercontent.com/shakil951/toffee/refs/heads/main/toffee_channels.m3u"
 ]
 
+# এখানে আপনার আসল ওয়ার্কার লিঙ্কটি আপডেট করা হয়েছে
 PROXY_BASE = "https://toffee-proxy.usergamil15.workers.dev/"
 SECRET_KEY = "FS_LIVE_TV_SECRET_2026"
 OUTPUT_FILE = "playlist.m3u"
@@ -33,7 +33,6 @@ def clean_cookie(text):
             c = decoded
         if not c.startswith("Edge-Cache-Cookie="):
             c = "Edge-Cache-Cookie=" + c
-        # কোলন (:) সহ সমস্ত স্পেশাল ক্যারেক্টারকে সম্পূর্ণ এনকোড করা
         return urllib.parse.quote(c, safe="")
     return ""
 
@@ -82,7 +81,6 @@ def build_playlist():
 
             encoded_url = urllib.parse.quote(raw_stream, safe="")
             
-            # প্রক্সি URL তৈরি (ক্লিন ও স্ট্যান্ডার্ড ফরম্যাট)
             final_proxy_url = (
                 f"{PROXY_BASE}?url={encoded_url}"
                 f"&cookie={cookie_encoded}"
