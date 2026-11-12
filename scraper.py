@@ -1,14 +1,12 @@
 import re
-import urllib.parse
 import requests
 
+# নতুন সোর্স লিংক আপডেট করা হলো
 SOURCE_URLS = [
-    "https://raw.githubusercontent.com/shakil951/toffee/refs/heads/main/toffee_channels.m3u"
+    "https://raw.githubusercontent.com/srhady/toffee-bd/refs/heads/main/toffee_playlist.m3u"
 ]
 
-# এখানে আপনার আসল ওয়ার্কার লিঙ্কটি আপডেট করা হয়েছে
 PROXY_BASE = "https://toffee-proxy.usergamil15.workers.dev/"
-SECRET_KEY = "FS_LIVE_TV_SECRET_2026"
 OUTPUT_FILE = "playlist.m3u"
 
 def get_source():
@@ -22,29 +20,13 @@ def get_source():
             pass
     return None
 
-def clean_cookie(text):
-    match = re.search(r'(URLPrefix[^"\s\n\r&]+)', text)
-    if match:
-        c = match.group(1)
-        while "%" in c:
-            decoded = urllib.parse.unquote(c)
-            if decoded == c:
-                break
-            c = decoded
-        if not c.startswith("Edge-Cache-Cookie="):
-            c = "Edge-Cache-Cookie=" + c
-        return urllib.parse.quote(c, safe="")
-    return ""
-
 def build_playlist():
     content = get_source()
     if not content:
         print("Source fetch failed")
         return
 
-    cookie_encoded = clean_cookie(content)
     lines = content.replace("\r", "").split("\n")
-    
     out_lines = ["#EXTM3U\n"]
     current_logo = ""
     current_name = ""
@@ -52,8 +34,7 @@ def build_playlist():
 
     for line in lines:
         l = line.strip()
-        if not l:
-            continue
+        if not l: continue
 
         if l.startswith("#EXTINF:"):
             logo_m = re.search(r'tvg-logo="([^"]+)"', l)
@@ -68,31 +49,18 @@ def build_playlist():
                 current_name = "Toffee Channel"
 
         elif not l.startswith("#") and ("http://" in l or "https://" in l):
-            raw_stream = l
-            if "cookie=" in raw_stream:
-                raw_stream = raw_stream.split("cookie=")[0]
-            if "url=" in raw_stream:
-                m = re.search(r'url=([^&]+)', raw_stream)
-                if m:
-                    raw_stream = urllib.parse.unquote(m.group(1))
-            
-            raw_stream = re.sub(r'[?&]$', '', raw_stream)
-            raw_stream = urllib.parse.unquote(raw_stream)
+            channel_id = "unknown_channel"
+            match = re.search(r'/([^/]+)/(?:playlist|index)\.m3u8', l)
+            if match:
+                channel_id = match.group(1)
 
-            encoded_url = urllib.parse.quote(raw_stream, safe="")
-            
-            final_proxy_url = (
-                f"{PROXY_BASE}?url={encoded_url}"
-                f"&cookie={cookie_encoded}"
-                f"&secret_key={SECRET_KEY}"
-                f"&dummy=.m3u8"
-            )
+            final_proxy_url = f"{PROXY_BASE}{channel_id}/index.m3u8"
 
             ch_name = current_name if current_name else "Toffee Channel"
             tag_line = f'#EXTINF:-1 tvg-id="{ch_name}" tvg-name="{ch_name}" tvg-logo="{current_logo}" group-title="{current_group}",{ch_name}'
             
             out_lines.append(f"{tag_line}\n{final_proxy_url}\n")
-
+            
             current_logo = ""
             current_name = ""
             current_group = "Toffee Live"
@@ -100,7 +68,7 @@ def build_playlist():
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.writelines(out_lines)
 
-    print(f"Generated valid playlist with {len(out_lines)-1} entries.")
+    print(f"Generated CLEAN playlist with {len(out_lines)-1} entries.")
 
 if __name__ == "__main__":
     build_playlist()
